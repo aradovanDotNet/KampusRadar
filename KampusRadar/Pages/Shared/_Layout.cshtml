@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="hr" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – KampusRadar</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/favicon.svg" />
+
+    @* Primijeni spremljenu temu prije iscrtavanja stranice (nema "bljeska" svijetle teme) *@
+    <script>
+        (function () {
+            const tema = localStorage.getItem("kampus-tema")
+                ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+            document.documentElement.setAttribute("data-bs-theme", tema);
+        })();
+    </script>
+
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/fontovi.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/kampus.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="preskoci" href="#sadrzaj">Preskoči na sadržaj</a>
+
+    @* Partial 1: izbornik (navigacija) *@
+    <partial name="_Navigacija" />
+
+    <main id="sadrzaj" class="container sadrzaj" role="main">
+        @* Partial 2: poruka nakon spremanja/brisanja (TempData) *@
+        <partial name="_StatusPoruka" />
+
+        @RenderBody()
+    </main>
+
+    @* Partial 3: podnožje *@
+    <partial name="_Podnozje" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/kampus.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

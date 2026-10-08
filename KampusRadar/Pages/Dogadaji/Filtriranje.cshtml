@@ -1,0 +1,57 @@
+@page
+@model KampusRadar.Pages.Dogadaji.FiltriranjeModel
+@{
+    ViewData["Title"] = "Filtriranje";
+}
+
+<h1>Filtriranje događaja</h1>
+<p class="uvod">Filtri se šalju GET zahtjevom pa se rezultat može podijeliti linkom.</p>
+
+@* method="get" → vrijednosti idu u query string: ?Pojam=git&Kategorija=Radionica... *@
+<form method="get" class="filtar" role="search">
+    <div class="polje">
+        <label asp-for="Pojam" class="form-label"></label>
+        <input asp-for="Pojam" class="form-control" placeholder="npr. hackathon" />
+    </div>
+    <div class="polje">
+        <label asp-for="Kategorija" class="form-label"></label>
+        <select asp-for="Kategorija" asp-items="Model.Kategorije" class="form-select">
+            <option value="">Sve kategorije</option>
+        </select>
+    </div>
+    <div class="polje">
+        <label asp-for="MaksCijena" class="form-label"></label>
+        <input asp-for="MaksCijena" class="form-control" inputmode="decimal" placeholder="bez ograničenja" />
+        <span asp-validation-for="MaksCijena" class="text-danger"></span>
+    </div>
+    <div class="polje form-check filtar-kvacica">
+        <input asp-for="SamoNadolazeci" class="form-check-input" />
+        <label asp-for="SamoNadolazeci" class="form-check-label"></label>
+    </div>
+    <div class="filtar-akcije">
+        <button type="submit" class="btn btn-primary">Filtriraj</button>
+        <a asp-page="./Filtriranje">Očisti filtre</a>
+    </div>
+</form>
+
+<p class="rezultat-broj" aria-live="polite">
+    Pronađeno: <strong>@Model.Rezultati.Count</strong>
+    @Hrvatski.Mnozina(Model.Rezultati.Count, "događaj", "događaja")
+</p>
+
+@if (Model.Rezultati.Count == 0)
+{
+    <div class="prazno">
+        <img src="~/images/prazno.svg" alt="" width="200" height="160" />
+        <p>Nema događaja za odabrane filtre. Ukloni neki filtar ili povećaj najvišu cijenu.</p>
+    </div>
+}
+else
+{
+    <div class="mreza-ulaznica">
+        @foreach (var dogadaj in Model.Rezultati)
+        {
+            <partial name="_KarticaDogadaja" model="dogadaj" />
+        }
+    </div>
+}

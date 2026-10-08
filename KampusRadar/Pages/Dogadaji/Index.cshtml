@@ -1,0 +1,46 @@
+@page
+@model KampusRadar.Pages.Dogadaji.IndexModel
+@{
+    ViewData["Title"] = "Događaji";
+}
+
+<div class="naslov-s-akcijom">
+    <h1>Događaji</h1>
+    <a class="btn btn-primary" asp-page="Create">Novi događaj</a>
+</div>
+
+<div class="tablica-omotac">
+    <table class="table tablica">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Dogadaji[0].Naziv)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Dogadaji[0].Kategorija)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Dogadaji[0].Pocetak)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Dogadaji[0].Lokacija)</th>
+                <th scope="col" class="text-end">@Html.DisplayNameFor(model => model.Dogadaji[0].Cijena)</th>
+                <th scope="col" class="text-end">@Html.DisplayNameFor(model => model.Dogadaji[0].BrojMjesta)</th>
+                <th scope="col">Prijava</th>
+                <th scope="col"><span class="visually-hidden">Akcije</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Dogadaji)
+            {
+                <tr class="@(item.JeProsao() ? "red-prosao" : "")">
+                    <td class="fw-semibold">@Html.DisplayFor(modelItem => item.Naziv)</td>
+                    <td>@item.Kategorija.Naziv()</td>
+                    <td class="text-nowrap">@Html.DisplayFor(modelItem => item.Pocetak)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Lokacija)</td>
+                    <td class="text-end">@item.CijenaZaPrikaz()</td>
+                    <td class="text-end">@Html.DisplayFor(modelItem => item.BrojMjesta)</td>
+                    <td>@(item.PotrebnaPrijava ? "Da" : "Ne")</td>
+                    <td class="akcije">
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Uredi</a>
+                        <a asp-page="./Details" asp-route-id="@item.Id">Detalji</a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id" class="link-opasno">Obriši</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

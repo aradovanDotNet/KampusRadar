@@ -1,0 +1,61 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Početna";
+}
+
+<section class="hero">
+    <div class="hero-tekst">
+        <h1 class="hero-naslov">Što se događa na kampusu?</h1>
+        <p class="hero-uvod">
+            Hackathoni, radionice, turniri i predavanja na jednom mjestu.
+            Pronađi događaj, provjeri koliko je mjesta i ne propusti ništa.
+        </p>
+        <div class="hero-akcije">
+            <a class="btn btn-primary btn-lg" asp-page="/Dogadaji/Filtriranje">Pronađi događaj</a>
+            <a class="btn btn-outline-primary btn-lg" asp-page="/Dogadaji/Create">Dodaj događaj</a>
+        </div>
+        <p class="hero-statistika">
+            Nadolazećih: <strong>@Model.BrojNadolazecih</strong>
+            @Hrvatski.Mnozina(Model.BrojNadolazecih, "događaj", "događaja")
+        </p>
+    </div>
+    <img class="hero-slika" src="~/images/hero-kampus.webp" width="640" height="560"
+         alt="Ilustracija radara s ulaznicama za događaje" />
+</section>
+
+<section class="odjeljak" aria-labelledby="uskoro-naslov">
+    <div class="odjeljak-zaglavlje">
+        <h2 id="uskoro-naslov">Uskoro</h2>
+        <a asp-page="/Dogadaji/Sortirano">Svi događaji po datumu</a>
+    </div>
+
+    @if (Model.Uskoro.Count == 0)
+    {
+        <p>Trenutno nema nadolazećih događaja. <a asp-page="/Dogadaji/Create">Dodaj prvi.</a></p>
+    }
+    else
+    {
+        <div class="mreza-ulaznica">
+            @foreach (var dogadaj in Model.Uskoro)
+            {
+                <partial name="_KarticaDogadaja" model="dogadaj" />
+            }
+        </div>
+    }
+</section>
+
+<section class="odjeljak" aria-labelledby="kategorije-naslov">
+    <h2 id="kategorije-naslov">Pregledaj po kategoriji</h2>
+    <ul class="kategorije">
+        @foreach (var kategorija in Enum.GetValues<KategorijaDogadaja>())
+        {
+            <li>
+                <a class="kategorija-cip" asp-page="/Dogadaji/Filtriranje" asp-route-kategorija="@kategorija">
+                    <img src="@Url.Content($"~/images/kategorije/{kategorija.Slug()}.svg")" alt="" width="20" height="20" />
+                    @kategorija.Naziv()
+                </a>
+            </li>
+        }
+    </ul>
+</section>

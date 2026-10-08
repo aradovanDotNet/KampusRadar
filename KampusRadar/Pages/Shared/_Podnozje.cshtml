@@ -1,0 +1,17 @@
+<footer class="podnozje">
+    <div class="container podnozje-sadrzaj">
+        <div class="podnozje-marka">
+            <img src="~/images/logo.svg" alt="" width="28" height="28" />
+            <p>
+                <strong>KampusRadar</strong><br />
+                Demo projekt za ishod I1 – ASP.NET Core Razor Pages, .NET 10
+            </p>
+        </div>
+        <nav aria-label="Poveznice u podnožju" class="podnozje-linkovi">
+            <a asp-page="/Dogadaji/Index">Svi događaji</a>
+            <a asp-page="/Dogadaji/Filtriranje">Filtriranje</a>
+            <a asp-page="/OProjektu">O projektu</a>
+        </nav>
+        <p class="podnozje-copy">&copy; @DateTime.Now.Year Veleučilište u Bjelovaru – materijal za nastavu</p>
+    </div>
+</footer>

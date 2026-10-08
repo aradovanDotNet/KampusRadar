@@ -1,0 +1,39 @@
+@model Dogadaj
+@*
+    Partial s modelom: jedna "ulaznica" (kartica događaja).
+    Koristi se na početnoj stranici i na stranici za filtriranje:
+    <partial name="_KarticaDogadaja" model="dogadaj" />
+*@
+<article class="ulaznica ulaznica--@Model.Kategorija.Slug() @(Model.JeProsao() ? "ulaznica--prosla" : "")">
+    <div class="ulaznica-datum" aria-hidden="true">
+        <span class="ulaznica-dan">@Model.Pocetak.ToString("dd")</span>
+        <span class="ulaznica-mjesec">@Model.Pocetak.ToString("MMM")</span>
+        <span class="ulaznica-sat">@Model.Pocetak.ToString("HH:mm")</span>
+    </div>
+
+    <div class="ulaznica-tijelo">
+        <div class="ulaznica-vrh">
+            <img class="ikona-kategorije" src="@Url.Content($"~/images/kategorije/{Model.Kategorija.Slug()}.svg")"
+                 alt="" width="22" height="22" />
+            <span class="oznaka">@Model.Kategorija.Naziv()</span>
+            <span class="odbrojavanje" data-pocetak="@Model.Pocetak.ToString("yyyy-MM-ddTHH:mm:ss")"></span>
+        </div>
+
+        <h3 class="ulaznica-naslov">
+            <a asp-page="/Dogadaji/Details" asp-route-id="@Model.Id">@Model.Naziv</a>
+        </h3>
+
+        <p class="ulaznica-detalji">
+            <span class="visually-hidden">Početak: @Model.Pocetak.ToString("dd.MM.yyyy. HH:mm"). </span>
+            @Model.Lokacija
+        </p>
+
+        <p class="ulaznica-dno">
+            <span class="cijena @(Model.Cijena == 0 ? "cijena--besplatno" : "")">@Model.CijenaZaPrikaz()</span>
+            @if (Model.PotrebnaPrijava)
+            {
+                <span class="prijava">Potrebna prijava</span>
+            }
+        </p>
+    </div>
+</article>

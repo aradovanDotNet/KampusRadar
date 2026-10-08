@@ -1,0 +1,40 @@
+@page
+@model OProjektuModel
+@{
+    ViewData["Title"] = "O projektu";
+}
+
+<h1>O projektu</h1>
+<p class="uvod">
+    KampusRadar je demo aplikacija za ishod I1 (ASP.NET Core Razor Pages, .NET 10).
+    Tablica pokazuje gdje se u kodu nalazi svaki kriterij bodovanja.
+</p>
+
+<div class="tablica-omotac">
+    <table class="table tablica">
+        <thead>
+            <tr>
+                <th scope="col">Kriterij</th>
+                <th scope="col" class="text-end">Bodovi</th>
+                <th scope="col">Gdje u projektu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var k in Model.Kriteriji)
+            {
+                <tr>
+                    <td>@k.Opis</td>
+                    <td class="text-end"><span class="bodovi">@k.Bodovi b</span></td>
+                    <td><code>@k.Lokacija</code></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th scope="row">Ukupno</th>
+                <td class="text-end"><span class="bodovi">@Model.Kriteriji.Sum(k => k.Bodovi) b</span></td>
+                <td>Prag za prolaz: 10 b</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

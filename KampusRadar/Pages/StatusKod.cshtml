@@ -1,0 +1,13 @@
+@page
+@model StatusKodModel
+@{
+    ViewData["Title"] = Model.Naslov;
+}
+
+<div class="poruka-stranica">
+    <img src="~/images/prazno.svg" alt="" width="200" height="160" />
+    <p class="status-kod">@Model.Kod</p>
+    <h1>@Model.Naslov</h1>
+    <p>@Model.Opis</p>
+    <a class="btn btn-primary" asp-page="/Index">Na početnu</a>
+</div>

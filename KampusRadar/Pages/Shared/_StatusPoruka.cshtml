@@ -1,0 +1,11 @@
+@{
+    var poruka = TempData["Poruka"] as string;
+}
+@if (!string.IsNullOrEmpty(poruka))
+{
+    <div class="obavijest" role="status" data-obavijest>
+        <img src="~/images/kvacica.svg" alt="" width="22" height="22" />
+        <span>@poruka</span>
+        <button type="button" class="obavijest-zatvori" aria-label="Zatvori obavijest" data-zatvori-obavijest>&times;</button>
+    </div>
+}

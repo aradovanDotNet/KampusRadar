@@ -1,0 +1,67 @@
+@page
+@model KampusRadar.Pages.Dogadaji.EditModel
+@{
+    ViewData["Title"] = "Uredi događaj";
+}
+
+<h1>Uredi događaj</h1>
+<p class="uvod">Mijenjaš događaj <strong>@Model.Dogadaj.Naziv</strong>.</p>
+
+<div class="obrazac-omotac">
+    <form method="post" class="obrazac">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Dogadaj.Id" />
+            <div class="polje">
+                <label asp-for="Dogadaj.Naziv" class="form-label"></label>
+                <input asp-for="Dogadaj.Naziv" class="form-control" />
+                <span asp-validation-for="Dogadaj.Naziv" class="text-danger"></span>
+            </div>
+            <div class="polje">
+                <label asp-for="Dogadaj.Opis" class="form-label"></label>
+                <textarea asp-for="Dogadaj.Opis" class="form-control" rows="4" data-brojac="500"></textarea>
+                <span asp-validation-for="Dogadaj.Opis" class="text-danger"></span>
+            </div>
+            <div class="polja-red">
+                <div class="polje">
+                    <label asp-for="Dogadaj.Kategorija" class="form-label"></label>
+                    <select asp-for="Dogadaj.Kategorija" class="form-select"
+                            asp-items="Html.GetEnumSelectList<KategorijaDogadaja>()"></select>
+                    <span asp-validation-for="Dogadaj.Kategorija" class="text-danger"></span>
+                </div>
+                <div class="polje">
+                    <label asp-for="Dogadaj.Pocetak" class="form-label"></label>
+                    <input asp-for="Dogadaj.Pocetak" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" />
+                    <span asp-validation-for="Dogadaj.Pocetak" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="polje">
+                <label asp-for="Dogadaj.Lokacija" class="form-label"></label>
+                <input asp-for="Dogadaj.Lokacija" class="form-control" />
+                <span asp-validation-for="Dogadaj.Lokacija" class="text-danger"></span>
+            </div>
+            <div class="polja-red">
+                <div class="polje">
+                    <label asp-for="Dogadaj.Cijena" class="form-label"></label>
+                    <input asp-for="Dogadaj.Cijena" class="form-control" inputmode="decimal" />
+                    <span asp-validation-for="Dogadaj.Cijena" class="text-danger"></span>
+                </div>
+                <div class="polje">
+                    <label asp-for="Dogadaj.BrojMjesta" class="form-label"></label>
+                    <input asp-for="Dogadaj.BrojMjesta" class="form-control" />
+                    <span asp-validation-for="Dogadaj.BrojMjesta" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="polje form-check">
+                <input asp-for="Dogadaj.PotrebnaPrijava" class="form-check-input" />
+                <label asp-for="Dogadaj.PotrebnaPrijava" class="form-check-label"></label>
+            </div>
+        <div class="obrazac-akcije">
+            <button type="submit" class="btn btn-primary">Spremi promjene</button>
+            <a asp-page="./Details" asp-route-id="@Model.Dogadaj.Id">Odustani</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

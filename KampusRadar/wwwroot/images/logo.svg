@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KampusRadar">
+  <circle cx="34" cy="34" r="29" fill="#FF3D8B"/>
+  <circle cx="31" cy="31" r="29" fill="#3D5AFE"/>
+  <path d="M31 31 L31 2 A29 29 0 0 1 56.1 16.5 Z" fill="#FFFFFF" fill-opacity=".28"/>
+  <circle cx="31" cy="31" r="19" fill="none" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2.5"/>
+  <circle cx="31" cy="31" r="9.5" fill="none" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="2.5"/>
+  <circle cx="43" cy="17.5" r="4.5" fill="#FFD23F"/>
+  <circle cx="31" cy="31" r="3.2" fill="#FFFFFF"/>
+</svg>

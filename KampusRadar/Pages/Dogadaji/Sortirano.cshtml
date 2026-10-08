@@ -1,0 +1,50 @@
+@page
+@model KampusRadar.Pages.Dogadaji.SortiranoModel
+@{
+    ViewData["Title"] = "Sortirano";
+
+    // Pomoćna funkcija: strelica uz stupac po kojem je sortirano
+    string Strelica(string kljuc) => Model.Poredak == kljuc ? (Model.Silazno ? " ↓" : " ↑") : "";
+    // Klik na isti stupac mijenja smjer, klik na drugi stupac kreće uzlazno
+    bool SljedeciSilazno(string kljuc) => Model.Poredak == kljuc && !Model.Silazno;
+}
+
+<h1>Svi događaji, sortirano</h1>
+<p class="uvod">
+    Trenutno sortirano po ključu <strong>@Model.NazivPoretka</strong>,
+    @(Model.Silazno ? "silazno" : "uzlazno"). Klikni naslov stupca za promjenu.
+</p>
+
+<div class="tablica-omotac">
+    <table class="table tablica">
+        <thead>
+            <tr>
+                <th scope="col" aria-sort="@Model.AriaSort("naziv")">
+                    <a asp-route-poredak="naziv" asp-route-silazno="@SljedeciSilazno("naziv")">Naziv@(Strelica("naziv"))</a>
+                </th>
+                <th scope="col" aria-sort="@Model.AriaSort("kategorija")">
+                    <a asp-route-poredak="kategorija" asp-route-silazno="@SljedeciSilazno("kategorija")">Kategorija@(Strelica("kategorija"))</a>
+                </th>
+                <th scope="col" aria-sort="@Model.AriaSort("datum")">
+                    <a asp-route-poredak="datum" asp-route-silazno="@SljedeciSilazno("datum")">Početak@(Strelica("datum"))</a>
+                </th>
+                <th scope="col" class="text-end" aria-sort="@Model.AriaSort("cijena")">
+                    <a asp-route-poredak="cijena" asp-route-silazno="@SljedeciSilazno("cijena")">Cijena@(Strelica("cijena"))</a>
+                </th>
+                <th scope="col">Lokacija</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Dogadaji)
+            {
+                <tr class="@(d.JeProsao() ? "red-prosao" : "")">
+                    <td><a asp-page="./Details" asp-route-id="@d.Id">@d.Naziv</a></td>
+                    <td>@d.Kategorija.Naziv()</td>
+                    <td class="text-nowrap">@Html.DisplayFor(_ => d.Pocetak)</td>
+                    <td class="text-end">@d.CijenaZaPrikaz()</td>
+                    <td>@d.Lokacija</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

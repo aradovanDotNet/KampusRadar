@@ -1,0 +1,51 @@
+@page
+@model KampusRadar.Pages.Dogadaji.DetailsModel
+@{
+    ViewData["Title"] = Model.Dogadaj.Naziv;
+}
+
+<article class="detalji">
+    <div class="detalji-zaglavlje">
+        <img src="@Url.Content($"~/images/kategorije/{Model.Dogadaj.Kategorija.Slug()}.svg")" alt="" width="40" height="40"
+             class="ikona-kategorije" />
+        <div>
+            <span class="oznaka">@Model.Dogadaj.Kategorija.Naziv()</span>
+            <h1>@Model.Dogadaj.Naziv</h1>
+            <p class="odbrojavanje odbrojavanje--veliko" data-pocetak="@Model.Dogadaj.Pocetak.ToString("yyyy-MM-ddTHH:mm:ss")"></p>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Dogadaj.Opis))
+    {
+        <p class="detalji-opis">@Model.Dogadaj.Opis</p>
+    }
+
+    <dl class="detalji-popis">
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.Pocetak)</dt>
+            <dd>@Html.DisplayFor(model => model.Dogadaj.Pocetak)</dd>
+        </div>
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.Lokacija)</dt>
+            <dd>@Html.DisplayFor(model => model.Dogadaj.Lokacija)</dd>
+        </div>
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.Cijena)</dt>
+            <dd>@Model.Dogadaj.CijenaZaPrikaz()</dd>
+        </div>
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.BrojMjesta)</dt>
+            <dd>@Html.DisplayFor(model => model.Dogadaj.BrojMjesta)</dd>
+        </div>
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.PotrebnaPrijava)</dt>
+            <dd>@(Model.Dogadaj.PotrebnaPrijava ? "Da" : "Ne")</dd>
+        </div>
+    </dl>
+
+    <div class="obrazac-akcije">
+        <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Dogadaj.Id">Uredi</a>
+        <a class="btn btn-outline-danger" asp-page="./Delete" asp-route-id="@Model.Dogadaj.Id">Obriši</a>
+        <a asp-page="./Index">Natrag na popis</a>
+    </div>
+</article>

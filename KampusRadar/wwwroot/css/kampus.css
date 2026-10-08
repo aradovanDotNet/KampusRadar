@@ -1,0 +1,514 @@
+/* ==========================================================================
+   KampusRadar – vlastiti dizajn (kriteriji I1: izmjena dizajna 3 b + vlastiti CSS 1 b)
+   Ideja: "risograf" plakat – dvije boje tinte (plava + roza) i ulaznice kao kartice.
+   Bootstrap 5.3 ostaje za grid i obrasce; ovdje mijenjamo njegov izgled preko
+   CSS varijabli (design tokens).
+   ========================================================================== */
+
+/* 1) DESIGN TOKENS – sve boje i fontovi na jednom mjestu ----------------- */
+:root,
+[data-bs-theme="light"] {
+  --papir: #F4F6FF;
+  --povrsina: #FFFFFF;
+  --tinta: #14183A;
+  --tinta-blaga: #555B7D;
+  --plava: #3D5AFE;
+  --plava-jaca: #2840D6;
+  --roza: #FF3D8B;
+  --zuta: #FFD23F;
+  --rub: #DADEF2;
+  --uspjeh: #0F7B5F;
+  --sjena: 0 1px 0 rgba(20, 24, 58, .05), 0 10px 28px -14px rgba(20, 24, 58, .35);
+  --radijus: 14px;
+  --font-naslov: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-tekst: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Bootstrap varijable → naši tokeni */
+  --bs-body-bg: var(--papir);
+  --bs-body-color: var(--tinta);
+  --bs-body-font-family: var(--font-tekst);
+  --bs-secondary-color: var(--tinta-blaga);
+  --bs-border-color: var(--rub);
+  --bs-link-color-rgb: 40, 64, 214;
+  --bs-link-hover-color-rgb: 20, 24, 58;
+  --bs-focus-ring-color: rgba(61, 90, 254, .35);
+}
+
+[data-bs-theme="dark"] {
+  --papir: #0F1230;
+  --povrsina: #181C44;
+  --tinta: #EEF0FF;
+  --tinta-blaga: #A9AED6;
+  --plava: #7C8CFF;
+  --plava-jaca: #A3AEFF;
+  --roza: #FF6FA8;
+  --zuta: #FFD23F;
+  --rub: #2D3270;
+  --uspjeh: #4FD1A5;
+  --sjena: 0 1px 0 rgba(0, 0, 0, .3), 0 14px 30px -16px rgba(0, 0, 0, .8);
+
+  --bs-body-bg: var(--papir);
+  --bs-body-color: var(--tinta);
+  --bs-secondary-color: var(--tinta-blaga);
+  --bs-border-color: var(--rub);
+  --bs-link-color-rgb: 163, 174, 255;
+  --bs-link-hover-color-rgb: 238, 240, 255;
+}
+
+/* 2) OSNOVA ------------------------------------------------------------- */
+body {
+  background: var(--papir);
+  color: var(--tinta);
+  font-family: var(--font-tekst);
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-naslov);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: .005em;
+}
+
+h1 { font-size: clamp(2.4rem, 5vw, 3.4rem); margin-bottom: .5rem; }
+h2 { font-size: 2rem; }
+
+a { text-underline-offset: .2em; }
+
+:focus-visible {
+  outline: 3px solid var(--plava);
+  outline-offset: 2px;
+}
+
+.sadrzaj {
+  flex: 1;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.uvod {
+  color: var(--tinta-blaga);
+  max-width: 62ch;
+  margin-bottom: 1.75rem;
+}
+
+.preskoci {
+  position: absolute;
+  left: -999px;
+  top: .5rem;
+  background: var(--tinta);
+  color: var(--papir);
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  z-index: 10;
+}
+.preskoci:focus { left: .5rem; }
+
+/* 3) ZAGLAVLJE I IZBORNIK ---------------------------------------------- */
+.zaglavlje {
+  background: var(--povrsina);
+  border-bottom: 1px solid var(--rub);
+}
+
+.zaglavlje .navbar {
+  padding-left: .75rem;
+  padding-right: .75rem;
+}
+
+.marka {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--font-naslov);
+  font-weight: 800;
+  font-size: 1.7rem;
+  color: var(--tinta);
+}
+
+.izbornik .nav-link {
+  color: var(--tinta-blaga);
+  font-weight: 600;
+  padding: .45rem .8rem !important;
+  border-radius: 999px;
+}
+.izbornik .nav-link:hover { color: var(--tinta); }
+.izbornik .nav-link[aria-current="page"] {
+  color: var(--tinta);
+  background: color-mix(in srgb, var(--plava) 14%, transparent);
+}
+
+.zaglavlje-akcije {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.gumb-tema {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid var(--rub);
+  background: transparent;
+  color: var(--tinta);
+  border-radius: 999px;
+  padding: .4rem .85rem;
+  font-weight: 600;
+  font-size: .9rem;
+}
+.gumb-tema-ikona {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--tinta);
+  box-shadow: inset -4px -2px 0 0 var(--zuta);
+}
+
+/* 4) GUMBI – Bootstrapovi gumbi u našim bojama -------------------------- */
+.btn { font-weight: 700; border-radius: 999px; padding-inline: 1.15rem; }
+.btn-lg { padding-inline: 1.5rem; }
+
+.btn-primary {
+  --bs-btn-bg: var(--plava);
+  --bs-btn-border-color: var(--plava);
+  --bs-btn-hover-bg: var(--plava-jaca);
+  --bs-btn-hover-border-color: var(--plava-jaca);
+  --bs-btn-active-bg: var(--plava-jaca);
+  --bs-btn-color: #FFFFFF;
+  --bs-btn-hover-color: #FFFFFF;
+  box-shadow: 3px 3px 0 var(--roza);
+}
+[data-bs-theme="dark"] .btn-primary { --bs-btn-color: #0F1230; --bs-btn-hover-color: #0F1230; }
+
+.btn-outline-primary {
+  --bs-btn-color: var(--plava-jaca);
+  --bs-btn-border-color: var(--plava);
+  --bs-btn-hover-bg: var(--plava);
+  --bs-btn-hover-border-color: var(--plava);
+  --bs-btn-hover-color: #FFFFFF;
+  border-width: 2px;
+}
+
+/* 5) HERO NA POČETNOJ -------------------------------------------------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem 0 3rem;
+}
+
+.hero-naslov {
+  font-size: clamp(3.2rem, 8vw, 6rem);
+  line-height: .92;
+  max-width: 11ch;
+  /* "risograf" efekt: roza otisak malo pomaknut ispod plave tinte */
+  color: var(--plava-jaca);
+  text-shadow: 4px 4px 0 var(--roza);
+  margin-bottom: 1.25rem;
+}
+[data-bs-theme="dark"] .hero-naslov { color: var(--tinta); }
+
+.hero-uvod { font-size: 1.15rem; max-width: 46ch; color: var(--tinta-blaga); }
+.hero-akcije { display: flex; flex-wrap: wrap; gap: .9rem; margin: 1.75rem 0 1.25rem; }
+.hero-statistika { color: var(--tinta-blaga); }
+.hero-statistika strong { color: var(--tinta); font-size: 1.15rem; }
+
+.hero-slika { width: 100%; height: auto; }
+
+/* 6) ODJELJCI ---------------------------------------------------------- */
+.odjeljak { margin-top: 3rem; }
+.odjeljak-zaglavlje {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.naslov-s-akcijom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 7) ULAZNICA – kartica događaja (partial _KarticaDogadaja) ------------- */
+.mreza-ulaznica {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.ulaznica {
+  --stub: var(--plava);
+  --stub-tekst: #FFFFFF;
+  --sirina-stuba: 92px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--sirina-stuba) 1fr;
+  background: var(--povrsina);
+  border-radius: var(--radijus);
+  box-shadow: var(--sjena);
+  overflow: hidden;
+}
+
+/* Dva "zareza" ulaznice na liniji perforacije */
+.ulaznica::before,
+.ulaznica::after {
+  content: "";
+  position: absolute;
+  left: var(--sirina-stuba);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--papir);
+  transform: translateX(-50%);
+}
+.ulaznica::before { top: -10px; }
+.ulaznica::after { bottom: -10px; }
+
+.ulaznica--gaming, .ulaznica--zabava { --stub: var(--roza); }
+.ulaznica--radionica, .ulaznica--sport { --stub: var(--zuta); --stub-tekst: #14183A; }
+[data-bs-theme="dark"] .ulaznica { --stub-tekst: #0F1230; }
+
+.ulaznica-datum {
+  background: var(--stub);
+  color: var(--stub-tekst);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem .5rem;
+  border-right: 2px dashed color-mix(in srgb, var(--tinta) 30%, transparent);
+  text-align: center;
+}
+.ulaznica-dan { font-family: var(--font-naslov); font-weight: 800; font-size: 2.6rem; line-height: 1; }
+.ulaznica-mjesec { font-weight: 700; text-transform: lowercase; }
+.ulaznica-sat { font-size: .85rem; margin-top: .35rem; opacity: .9; }
+
+.ulaznica-tijelo { padding: 1.1rem 1.25rem 1.1rem 1.4rem; min-width: 0; }
+.ulaznica-vrh { display: flex; align-items: center; gap: .5rem; margin-bottom: .4rem; }
+
+.oznaka {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--tinta-blaga);
+}
+
+.odbrojavanje {
+  margin-left: auto;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--plava-jaca);
+  white-space: nowrap;
+}
+.odbrojavanje--veliko { margin: .25rem 0 0; font-size: 1rem; }
+
+.ulaznica-naslov {
+  font-size: 1.55rem;
+  margin: 0 0 .3rem;
+}
+.ulaznica-naslov a { color: var(--tinta); text-decoration: none; }
+.ulaznica-naslov a:hover { text-decoration: underline; }
+/* cijela kartica klikabilna, a link ostaje jedan (pristupačno) */
+.ulaznica-naslov a::after { content: ""; position: absolute; inset: 0; }
+
+.ulaznica-detalji { color: var(--tinta-blaga); margin-bottom: .6rem; }
+.ulaznica-dno { display: flex; gap: .5rem; flex-wrap: wrap; margin: 0; }
+
+.cijena, .prijava {
+  font-size: .82rem;
+  font-weight: 700;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  border: 1px solid var(--rub);
+}
+.cijena--besplatno { background: color-mix(in srgb, var(--uspjeh) 14%, transparent); border-color: transparent; color: var(--uspjeh); }
+
+.ulaznica--prosla { opacity: .55; }
+
+.ikona-kategorije { flex: none; }
+[data-bs-theme="dark"] .ikona-kategorije { filter: invert(1); }
+
+/* 8) KATEGORIJE (čipovi na početnoj) ----------------------------------- */
+.kategorije { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+.kategorija-cip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .5rem 1rem;
+  border-radius: 999px;
+  background: var(--povrsina);
+  border: 1px solid var(--rub);
+  color: var(--tinta);
+  font-weight: 600;
+  text-decoration: none;
+}
+.kategorija-cip:hover { border-color: var(--plava); }
+[data-bs-theme="dark"] .kategorija-cip img { filter: invert(1); }
+
+/* 9) TABLICE (Index, Sortirano, O projektu) ---------------------------- */
+.tablica-omotac {
+  background: var(--povrsina);
+  border-radius: var(--radijus);
+  box-shadow: var(--sjena);
+  overflow-x: auto;
+}
+.tablica {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--tinta);
+  margin: 0;
+}
+.tablica th { font-size: .85rem; color: var(--tinta-blaga); font-weight: 700; white-space: nowrap; }
+.tablica th a { color: inherit; text-decoration: none; }
+.tablica th[aria-sort="ascending"] a,
+.tablica th[aria-sort="descending"] a { color: var(--plava-jaca); }
+.tablica td, .tablica th { padding: .85rem 1rem; vertical-align: middle; border-color: var(--rub); }
+.tablica tbody tr:hover { background: color-mix(in srgb, var(--plava) 6%, transparent); }
+.red-prosao td { color: var(--tinta-blaga); }
+.akcije { white-space: nowrap; }
+.akcije a + a { margin-left: .75rem; }
+.link-opasno { color: #C4314B; }
+[data-bs-theme="dark"] .link-opasno { color: #FF8FA3; }
+
+.bodovi {
+  display: inline-block;
+  min-width: 2.6rem;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--roza) 16%, transparent);
+  padding: .1rem .5rem;
+}
+
+/* 10) OBRASCI (Create, Edit, Filtriranje) ------------------------------ */
+.obrazac-omotac,
+.filtar,
+.detalji,
+.potvrda {
+  background: var(--povrsina);
+  border-radius: var(--radijus);
+  box-shadow: var(--sjena);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+.obrazac-omotac { max-width: 800px; }
+.obrazac { max-width: 720px; }
+.polje { margin-bottom: 1.1rem; }
+.polja-red { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-label { font-weight: 600; margin-bottom: .3rem; }
+.form-control, .form-select {
+  border-radius: 10px;
+  border-color: var(--rub);
+  background-color: var(--papir);
+  padding: .6rem .8rem;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--plava);
+  box-shadow: 0 0 0 .2rem var(--bs-focus-ring-color);
+}
+.form-check-input:checked { background-color: var(--plava); border-color: var(--plava); }
+.input-validation-error { border-color: #C4314B !important; }
+.text-danger { font-size: .88rem; }
+
+.brojac { display: block; text-align: right; font-size: .8rem; color: var(--tinta-blaga); margin-top: .25rem; }
+.brojac--puno { color: #C4314B; font-weight: 700; }
+
+.obrazac-akcije { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+
+.filtar {
+  display: grid;
+  grid-template-columns: 2fr 1.4fr 1.2fr auto;
+  gap: 1rem 1.25rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+}
+.filtar .polje { margin-bottom: 0; }
+.filtar-kvacica { padding-bottom: .6rem; }
+.filtar-akcije { grid-column: 1 / -1; display: flex; gap: 1rem; align-items: center; }
+.rezultat-broj { color: var(--tinta-blaga); }
+
+.prazno { text-align: center; padding: 2rem 1rem; color: var(--tinta-blaga); }
+
+/* 11) DETALJI ---------------------------------------------------------- */
+.detalji { max-width: 760px; }
+.detalji-zaglavlje { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+.detalji-zaglavlje h1 { margin: .1rem 0 0; }
+.detalji-opis { font-size: 1.1rem; max-width: 60ch; }
+.detalji-popis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+}
+.detalji-popis div { border-top: 2px solid var(--rub); padding-top: .6rem; }
+.detalji-popis dt { font-size: .82rem; color: var(--tinta-blaga); font-weight: 600; }
+.detalji-popis dd { font-weight: 700; margin: 0; }
+.potvrda { max-width: 680px; }
+
+/* 12) OBAVIJEST (partial _StatusPoruka) -------------------------------- */
+.obavijest {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  background: var(--povrsina);
+  border-radius: 12px;
+  box-shadow: var(--sjena);
+  padding: .8rem 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+.obavijest-zatvori {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--tinta-blaga);
+}
+.obavijest--skriva { opacity: 0; transition: opacity .3s; }
+
+/* 13) PORUKE (Greška, 404) --------------------------------------------- */
+.poruka-stranica { text-align: center; max-width: 560px; margin: 2rem auto; }
+.status-kod { font-family: var(--font-naslov); font-weight: 800; font-size: 4rem; color: var(--roza); margin: .5rem 0 0; }
+.tekst-blagi { color: var(--tinta-blaga); }
+
+/* 14) PODNOŽJE (partial _Podnozje) ------------------------------------- */
+.podnozje {
+  border-top: 1px solid var(--rub);
+  background: var(--povrsina);
+  font-size: .92rem;
+}
+.podnozje-sadrzaj {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+.podnozje-marka { display: flex; align-items: center; gap: .75rem; }
+.podnozje-marka p { margin: 0; color: var(--tinta-blaga); }
+.podnozje-marka strong { color: var(--tinta); }
+.podnozje-linkovi { display: flex; gap: 1.25rem; }
+.podnozje-copy { width: 100%; margin: 0; color: var(--tinta-blaga); font-size: .85rem; }
+
+/* 15) MOBITEL ---------------------------------------------------------- */
+@media (max-width: 991px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-slika { max-width: 420px; }
+  .filtar { grid-template-columns: 1fr 1fr; }
+  .zaglavlje-akcije { padding: .75rem 0; }
+}
+@media (max-width: 575px) {
+  .polja-red, .filtar { grid-template-columns: 1fr; }
+  .mreza-ulaznica { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

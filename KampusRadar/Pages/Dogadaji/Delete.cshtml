@@ -1,0 +1,31 @@
+@page
+@model KampusRadar.Pages.Dogadaji.DeleteModel
+@{
+    ViewData["Title"] = "Obriši događaj";
+}
+
+<div class="potvrda">
+    <h1>Obrisati događaj?</h1>
+    <p>Brisanje je trajno. Događaj <strong>@Model.Dogadaj.Naziv</strong> nestat će s popisa i iz baze.</p>
+
+    <dl class="detalji-popis">
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.Kategorija)</dt>
+            <dd>@Model.Dogadaj.Kategorija.Naziv()</dd>
+        </div>
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.Pocetak)</dt>
+            <dd>@Html.DisplayFor(model => model.Dogadaj.Pocetak)</dd>
+        </div>
+        <div>
+            <dt>@Html.DisplayNameFor(model => model.Dogadaj.Lokacija)</dt>
+            <dd>@Html.DisplayFor(model => model.Dogadaj.Lokacija)</dd>
+        </div>
+    </dl>
+
+    <form method="post" class="obrazac-akcije">
+        <input type="hidden" asp-for="Dogadaj.Id" />
+        <button type="submit" class="btn btn-danger">Obriši događaj</button>
+        <a asp-page="./Index">Odustani</a>
+    </form>
+</div>
